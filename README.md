@@ -1,2 +1,2 @@
-# Template
-Template for noobsters.
+# MINECRAFT CHESS
+PLAY CHESS
