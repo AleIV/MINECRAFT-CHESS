@@ -11,12 +11,15 @@ public @Data class ChessManager {
     private @NonNull Chess instance;
     private List<ChessBoard> boards;
 
-
     public ChessManager(Chess instance){
         this.instance = instance;
 
     }
-    
+
+    public enum Civilization {
+        ZOMB, BLACK, RED, YELLOW, BLUE, GREEN;
+    }
+
     public enum Color {
         WHITE, BLACK, RED, YELLOW, BLUE, GREEN;
     }

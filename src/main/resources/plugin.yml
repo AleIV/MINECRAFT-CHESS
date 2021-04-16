@@ -1,6 +1,6 @@
 name: MINECRAFT-CHESS
 version: ${version}
-main: net.noobsters.core.paper.Core
+main: net.noobsters.core.paper.Chess
 api-version: 1.16
 api: ["1.16"]
 authors: [AleIV]

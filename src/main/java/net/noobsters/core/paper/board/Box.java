@@ -23,4 +23,8 @@ public  @Data class Box {
     public boolean containsPiece(){
         return piece != null;
     }
+
+    public boolean containsPiece(Piece piece){
+        return this.piece != null && this.piece == piece;
+    }
 }

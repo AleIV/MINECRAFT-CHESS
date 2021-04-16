@@ -1,19 +1,15 @@
 package net.noobsters.core.paper;
 
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import co.aikar.commands.PaperCommandManager;
 import lombok.Getter;
 
-/**
- * Core
- */
-public class Chess extends JavaPlugin implements Listener{
-    // GUI tutorial: https://github.com/MrMicky-FR/FastInv
-    // Scoreboard Tutorial: https://github.com/MrMicky-FR/FastBoard
-    // Commands Tutorial: https://github.com/aikar/commands/wiki/Using-ACF
+
+public class Chess extends JavaPlugin{
+
     private @Getter PaperCommandManager commandManager;
+    private @Getter ChessManager chessManager;
 
     private static @Getter Chess instance;
 
@@ -22,6 +18,8 @@ public class Chess extends JavaPlugin implements Listener{
         instance = this;
 
         commandManager = new PaperCommandManager(this);
+        commandManager.registerCommand(new ChessCMD(this));
+        chessManager = new ChessManager(this);
 
     }
 
