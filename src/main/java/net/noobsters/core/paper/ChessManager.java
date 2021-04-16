@@ -16,11 +16,7 @@ public @Data class ChessManager {
 
     }
 
-    public enum Civilization {
-        ZOMB, BLACK, RED, YELLOW, BLUE, GREEN;
-    }
-
-    public enum Color {
+    public enum PieceColor {
         WHITE, BLACK, RED, YELLOW, BLUE, GREEN;
     }
 
