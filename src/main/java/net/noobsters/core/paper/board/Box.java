@@ -17,7 +17,6 @@ public  @Data class Box {
 
     public void setPiece(Piece piece){
         this.piece = piece;
-        //create entity
     }
 
     public boolean containsPiece(){
@@ -27,4 +26,5 @@ public  @Data class Box {
     public boolean containsPiece(Piece piece){
         return this.piece != null && this.piece == piece;
     }
+
 }

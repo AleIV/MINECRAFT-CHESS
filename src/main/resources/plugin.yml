@@ -4,3 +4,4 @@ main: net.noobsters.core.paper.Chess
 api-version: 1.16
 api: ["1.16"]
 authors: [AleIV]
+softdepend: [Sentinel, Citizens]

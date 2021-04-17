@@ -42,6 +42,7 @@ dependencies {
     //Scoreboard, maybe use helper by lucko?
     compile 'fr.mrmicky:FastInv:3.0.2'
     compileOnly 'net.citizensnpcs:citizens-main:2.0.27-SNAPSHOT'
+    compileOnly 'org.mcmonkey:sentinel:2.2.6-SNAPSHOT'
 }
 
 processResources {
