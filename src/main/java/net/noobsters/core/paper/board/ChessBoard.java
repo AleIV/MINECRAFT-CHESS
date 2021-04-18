@@ -1,5 +1,6 @@
 package net.noobsters.core.paper.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -19,6 +20,7 @@ public @Data class ChessBoard {
     private boolean inGame = false;
     private Location boardLocation;
     private List<String> players; //participants name
+    private List<Move> history = new ArrayList<>();
 
     public ChessBoard(Chess instance, Location boardLocation, int boardSize, List<String> players){
         this.boardLocation = boardLocation;
@@ -34,7 +36,8 @@ public @Data class ChessBoard {
                 white = !white;
                 var loc = location.clone().add(0, 0, j == 0 ? 0 : diameter*j);
                 createSquare(loc, white ? Material.WHITE_CONCRETE : Material.BLACK_CONCRETE);
-                board[i][j] = new Box(loc.add(0, 1, 0));
+                var finalLoc = loc.add(0, 1, 0);
+                board[i][j] = new Box(finalLoc);
                 
             }
         }
@@ -51,6 +54,7 @@ public @Data class ChessBoard {
                 if(box.getPiece() != null){
                     var npc = box.getPiece().getNpc();
                     if(npc != null){
+                        npc.despawn();
                         npc.destroy();
                     }
                     box.getPiece().finalize();
@@ -65,6 +69,15 @@ public @Data class ChessBoard {
                     //black pawns
                     box.setPiece(new Piece(PieceType.PAWN, PieceColor.BLACK, box, player2));
 
+                }else if(box == getBox("D", 1)){
+                    //white queen
+
+                    box.setPiece(new Piece(PieceType.QUEEN, PieceColor.WHITE, box, player1));
+                }else if(box == getBox("D", 8)){
+                    //black queen
+
+                    box.setPiece(new Piece(PieceType.QUEEN, PieceColor.BLACK, box, player2));
+
                 }else if(box == getBox("E", 1)){
                     //white king
                     box.setPiece(new Piece(PieceType.KING, PieceColor.WHITE, box, player1));
@@ -72,14 +85,6 @@ public @Data class ChessBoard {
                 }else if(box == getBox("E", 8)){
                     //black king
                     box.setPiece(new Piece(PieceType.KING, PieceColor.BLACK, box, player2));
-
-                }else if(box == getBox("D", 1)){
-                    //white queen
-                    box.setPiece(new Piece(PieceType.QUEEN, PieceColor.WHITE, box, player1));
-
-                }else if(box == getBox("D", 8)){
-                    //black queen
-                    box.setPiece(new Piece(PieceType.QUEEN, PieceColor.BLACK, box, player2));
 
                 }else if(box == getBox("A", 1) || box == getBox("H", 1)){
                     //white towers
@@ -123,12 +128,31 @@ public @Data class ChessBoard {
         }
     }
 
-    public void move(Piece piece, BoxLoc move){
-        var box = getBox(move);
-        box.setPiece(piece);
-        piece.setBox(box);
-        piece.setHasBeenMoved(true);
+    public boolean move(BoxLoc from, BoxLoc to){
+        var box1 = getBox(from);
+        var box2 = getBox(to);
+
+        if(box1.isEmpty() || !box2.isEmpty()){
+            return false;
+            
+        }else{
+            var piece = box1.getPiece();
+            box1.getLocation().clone().add(0, -1, 0).getBlock().setType(Material.LIME_CONCRETE);
+            box2.setPiece(piece);
+            box1.setPiece(null);
+
+            piece.setBox(box2);
+            piece.setHasBeenMoved(true);
+            
+            var npc = piece.getNpc();
+            npc.getNavigator().setTarget(box2.getLocation());
+            box2.getLocation().clone().add(0, -1, 0).getBlock().setType(Material.YELLOW_CONCRETE);
+
+            history.add(new Move(from, to));
+            return true;
+        }
     }
+
 
     public Box getBox(int column, int row){
         return board[column-1][row-1];
@@ -137,14 +161,14 @@ public @Data class ChessBoard {
     public Box getBox(String column, int row){
         var rowPos = row-1;
         switch (column) {
-            case "A": return board[0][rowPos];
-            case "B": return board[1][rowPos];
-            case "C": return board[2][rowPos];
-            case "D": return board[3][rowPos];
-            case "E": return board[4][rowPos];
-            case "F": return board[5][rowPos];
-            case "G": return board[6][rowPos];
-            case "H": return board[7][rowPos];
+            case "H": return board[0][rowPos];
+            case "G": return board[1][rowPos];
+            case "F": return board[2][rowPos];
+            case "E": return board[3][rowPos];
+            case "D": return board[4][rowPos];
+            case "C": return board[5][rowPos];
+            case "B": return board[6][rowPos];
+            case "A": return board[7][rowPos];
                 
             default:
                 break;
